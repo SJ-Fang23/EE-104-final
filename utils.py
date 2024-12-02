@@ -79,6 +79,31 @@ def numpy_to_pil(images):
     else:
         print("Attempted numpy_to_pil. Image type could not be identified -- data returned unmodified.")
         return images
+    
+def generate_gaussian_noise(width, height, mean=0, variance=0.1):
+    sigma = np.sqrt(variance)
+    gaussian = np.random.normal(mean, sigma, (height, width))
+    gaussian = np.interp(gaussian, (gaussian.min(), gaussian.max()), (0, 255)).astype(np.uint8)
+    return gaussian
+
+def generate_uniform_noise(width, height, scale=1, mean=0):
+    # noise = np.random.uniform(scale, size=(height, width))
+    noise = np.random.uniform(-scale*225, scale*225, size=(height, width))
+    noise -= mean
+    # clip values to [0, 255]
+    noise = np.clip(noise, 0, 255)
+    # make noise values integers
+    noise = np.round(noise).astype(np.uint8)
+
+    return noise
+
+
+def add_noise(pil_image, noise, alpha=0.5):
+    '''Add given noise to an image'''
+    image = pil_to_numpy(pil_image)
+    combined = (image*(1-alpha) + noise*alpha).astype(np.uint8)
+    return numpy_to_pil(combined)
+
 
 def addNoise_gaussian(pil_image=None, mode='', alpha=.5, m=0, v=0.1):
     if pil_image is not None:
