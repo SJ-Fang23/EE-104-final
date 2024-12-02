@@ -17,7 +17,7 @@ if __name__ == "__main__":
         os.makedirs(output_folder_uniform)
 
     noise_gaussian = generate_gaussian_noise(255, 255, mean=0, variance=0.1)
-    noise_uniform = generate_uniform_noise(255, 255, scale=1, mean=0)
+    noise_uniform = generate_uniform_noise(255, 255, scale=0.5, mean=0)
 
     # generate a white image
     img_white = Image.new('L', (255, 255), 255)
